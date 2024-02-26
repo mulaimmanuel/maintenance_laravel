@@ -191,7 +191,7 @@
 <script>
     function showCheckAgain() {
         Swal.fire({
-            title: "Submit your note",
+            title: "Masukkan Catatan",
             input: "text",
             inputAttributes: {
                 autocapitalize: "off"
@@ -228,14 +228,19 @@
             cancelButtonText: 'Tidak'
         }).then((result) => {
             if (result.isConfirmed) {
+                // Mengubah nilai input menjadi '1'
                 document.getElementById('confirmed_finish3').value = '1';
+
+                // Menampilkan SweetAlert sukses
                 Swal.fire({
                     icon: 'success',
                     title: 'Closed berhasil!',
                     showConfirmButton: false,
                     timer: 2000 // Durasi notifikasi dalam milidetik
+                }).then(() => {
+                    // Men-submit formulir setelah SweetAlert sukses tertutup
+                    document.getElementById('closedForm').submit();
                 });
-                document.getElementById('closedForm').submit();
             }
         });
     }

@@ -14,7 +14,7 @@
     <section class="section">
         <div class="container">
             <div class="row">
-                <div class="col-mt-4">
+                <div class="col-lg-6">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Form Lihat FPP</h5>
@@ -73,7 +73,7 @@
                     </div>
                 </div>
 
-                <div class="col-mt-4">
+                <div class="col-lg-6">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Update Progress</h5>
@@ -285,7 +285,7 @@
         // Show SweetAlert confirmation
         Swal.fire({
             title: 'Konfirmasi',
-            text: 'Apakah Anda yakin ingin mengubah status?',
+            text: 'Apakah Anda yakin ingin mengubah status menjadi Finish?',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',

@@ -78,52 +78,45 @@
     <!-- ======= Sidebar ======= -->
     <aside id="sidebar" class="sidebar">
         <ul class="sidebar-nav" id="sidebar-nav">
-            <!-- ... (other menu items) ... -->
-            <!-- <li class="nav-item">
-                <a class="nav-link collapsed" href="{{ asset('surats') }}">
-                    <i class="bi bi-envelope-arrow-down"></i>
-                    <span>Data Surat</span>
-                </a>
-            </li> -->
             <b>
                 <li class="nav-label">Maintenance Menu</h5>
             </b>
             <li class="nav-label">Production</li>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ asset('dashboardproduction') }}">
-                    <i class="bi bi-card-checklist"></i>
+                    <i class="bi bi-list-check"></i>
                     <span>Data Form FPP</span>
                 </a>
             </li>
             <li class="nav-label">Maintenance</li>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ asset('dashboardmaintenance') }}">
-                    <i class="bi bi-card-checklist"></i>
+                    <i class="bi bi-file-earmark-text-fill"></i>
                     <span>Data Received FPP</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ asset('dashpreventive') }}">
-                    <i class="bi bi-card-checklist"></i>
+                    <i class="bi bi-calendar"></i>
                     <span>Data Jadwal Preventive</span>
                 </a>
             </li>
             <li class="nav-label">Dept.Maintenance</li>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ asset('mesins') }}">
-                    <i class="bi bi-card-checklist"></i>
+                    <i class="bi bi-gear"></i>
                     <span>Data Mesin</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ asset('dashboarddeptmtce') }}">
-                    <i class="bi bi-card-checklist"></i>
+                    <i class="bi bi-check2"></i>
                     <span>Data Approved FPP</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ asset('deptmtcepreventive') }}">
-                    <i class="bi bi-card-checklist"></i>
+                    <i class="bi bi-calendar"></i>
                     <span>Data Jadwal Preventive</span>
                 </a>
             </li>
@@ -131,7 +124,7 @@
             <li class="nav-label">Sales</li>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{ asset('dashboardfppsales') }}">
-                    <i class="bi bi-card-checklist"></i>
+                    <i class="bi bi-list-check"></i>
                     <span>Data Form FPP</span>
                 </a>
             </li>

@@ -43,20 +43,6 @@ class FormFPPController extends Controller
         return view('fpps.create');
     }
 
-    // public function ClosedFormProduction(FormFPP $formperbaikan)
-    // {
-    //     $formperbaikans = FormFPP::latest()->paginate(5);
-    //     $status = $formperbaikan->status;
-
-    //     if ($formperbaikan->status === 'Open' || $formperbaikan->status === 'Closed' || $formperbaikan->status === 'On Progress') {
-    //         return view('fpps.show', compact('formperbaikan', 'formperbaikans'))->with('i', (request()->input('page', 1) - 1) * 5);
-    //     } elseif ($formperbaikan->status === 'Finish') {
-    //         return view('fpps.closed', compact('formperbaikan', 'formperbaikans'))->with('i', (request()->input('page', 1) - 1) * 5);
-    //     } else {
-    //         return view('fpps.index', compact('formperbaikan', 'formperbaikans'))->with('i', (request()->input('page', 1) - 1) * 5);
-    //     }
-    // }
-
     public function LihatMaintenance(FormFPP $formperbaikan)
     {
         $formperbaikans = FormFPP::latest()->paginate(5);
@@ -195,7 +181,7 @@ class FormFPPController extends Controller
             }
 
             // Store the new file
-            $attachmentFile = $request->file('attachment_file')->store('public/attachment_file');
+            $attachmentFile = $request->file('attachment_file')->store('public');
         } else {
             // If no new file is uploaded, use the existing file path
             $attachmentFile = $formperbaikan->attachment_file;
