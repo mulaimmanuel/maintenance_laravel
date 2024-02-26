@@ -8,14 +8,18 @@ use Illuminate\Support\Carbon;
 
 class FormFPP extends Model
 {
+    protected $table = 'form_f_p_p_s';
     use HasFactory;
     protected $fillable = [
-        'id', 'pemohon', 'date',
+        'id', 'id_fpp', 'pemohon', 'date',
         'section', 'mesin', 'lokasi',
-        'kendala', 'gambar', 'status',
-        'tindak_lanjut', 'due_date', 'schedule_pengecekan',
-        'attachment_file', 'note'
+        'kendala', 'gambar', 'status'
     ];
+
+    public function mesins()
+    {
+        return $this->hasMany(Mesin::class, 'id_fpp', 'id_fpp')->where('status', 'closed');
+    }
 
     protected $dates = ['created_at', 'updated_at'];
 
@@ -34,67 +38,83 @@ class FormFPP extends Model
         $status = strtolower($this->attributes['status']);
 
         switch ($status) {
-            case 'open':
-            case 'Open':
-                return 'green';
-            case 'on progress':
-            case 'On Progress':
-                return 'orange'; // Mengganti warna menjadi 'darkyellow'
-            case 'finish':
-            case 'Finish':
-                return 'blue';
-            case 'closed':
-            case 'Closed':
-                return 'black';
+            case '0':
+                return 'green'; // Mengubah warna menjadi 'green' untuk status 0 (Open)
+            case '1':
+                return 'orange'; // Mengubah warna menjadi 'orange' untuk status 1 (On Progress)
+            case '2':
+                return 'blue'; // Mengubah warna menjadi 'blue' untuk status 2 (Finish)
+            case '3':
+                return 'black'; // Mengubah warna menjadi 'black' untuk status 3 (Closed)
             default:
-                return 'lightgray';
+                return 'transparent'; // Mengembalikan 'transparent' untuk nilai lain
         }
     }
 
-    public function getNoteBackgroundColorAttribute()
+    public function tindaklanjuts()
     {
-        $status = strtolower($this->attributes['note']);
+        return $this->hasMany(TindakLanjut::class, 'id_fpp', 'id_fpp');
+    }
+
+    public function ubahText()
+    {
+        $status = $this->attributes['status'];
 
         switch ($status) {
-            case 'form fpp dibuat':
-            case 'FORM FPP DIBUAT':
-                return 'green';
-            case 'draft tindak lanjut':
-            case 'DRAFT TINDAK LANJUT':
-                return 'orange'; // Mengganti warna menjadi 'darkyellow'
-            case 'tindak lanjut submitted':
-            case 'TINDAK LANJUT SUBMITTED':
-                return 'blue';
-            case 'tindak lanjut berhasil dikonfirmasi':
-            case 'TINDAK LANJUT BERHASIL DIKONFIRMASI':
-                return 'grey';
-            case 'form fpp closed':
-            case 'Form FPP CLOSED':
-                return 'black';
-            case '':
-                return 'transparent'; //
+            case '0':
+                return 'Open';
+            case '1':
+                return 'On Progress';
+            case '2':
+                return 'Finish';
+            case '3':
+                return 'Closed';
             default:
-                return 'red';
+                return 'Unknown';
         }
     }
 
-    // protected static function boot()
-    // {
-    //     parent::boot();
+    public function getAttachmentButtonClass()
+    {
+        $fileExtension = pathinfo($this->attachment_file, PATHINFO_EXTENSION);
+        switch ($fileExtension) {
+            case 'png':
+            case 'jpg':
+            case 'jpeg':
+            case 'gif':
+                return 'btn btn-dark';
+            case 'pdf':
+                return 'btn btn-danger';
+            case 'doc':
+            case 'docx':
+                return 'btn btn-primary';
+            case 'xls':
+            case 'xlsx':
+                return 'btn btn-success';
+            default:
+                return 'btn btn-secondary';
+        }
+    }
 
-    //     static::creating(function ($model) {
-    //         $latestId = static::latest('id')->value('id');
-
-    //         if (!$latestId) {
-    //             $model->id = 'FPP0001';
-    //         } else {
-    //             $prefix = 'FPP';
-    //             $length = 4;
-    //             $latestIdNumber = (int)substr($latestId, strlen($prefix));
-    //             $newIdNumber = $latestIdNumber + 1;
-    //             $newId = $prefix . str_pad($newIdNumber, $length, '0', STR_PAD_LEFT);
-    //             $model->id = $newId;
-    //         }
-    //     });
-    // }
+    public function getAttachmentButtonIcon()
+    {
+        $fileExtension = pathinfo($this->attachment_file, PATHINFO_EXTENSION);
+        switch ($fileExtension) {
+            case 'png':
+            case 'jpg':
+            case 'jpeg':
+            case 'gif':
+                return 'bi bi-image';
+            case 'pdf':
+                return 'bi bi-file-earmark-pdf';
+            case 'doc':
+            case 'docx':
+                return 'bi bi-file-earmark-word';
+            case 'xls':
+            case 'xlsx':
+                return 'bi bi-file-earmark-spreadsheet';
+            default:
+                return 'bi bi-file-earmark';
+        }
+    }
 }

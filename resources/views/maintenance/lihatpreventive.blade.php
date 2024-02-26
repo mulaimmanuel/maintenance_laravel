@@ -5,9 +5,6 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
 
 <main id="main" class="main">
-    <!-- Existing content... -->
-
-    <!-- New Form Content -->
     <section class="section">
         <div class="container">
             <div class="row">
@@ -15,7 +12,6 @@
                     <div class="card">
                         <div class="card-body">
                             <h2 class="card-title">Preventive Maintenance</h2>
-
                             <form id="FPPForm" action="{{ route('preventives.update', $preventive->id) }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')

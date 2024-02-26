@@ -25,30 +25,34 @@
                     <div class="card-body">
                         <h5 class="card-title">List Data Jadwal Preventif</h5>
                         <!-- Table with stripped rows -->
-                        <table class="table datatable">
-                            <thead>
-                                <tr>
-                                    <th scope="col">No</th>
-                                    <th scope="col">Nama Mesin</th>
-                                    <th scope="col">Section</th>
-                                    <th scope="col">Lokasi</th>
-                                    <th scope="col">Due Date</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Created Date</th>
-                                    <th scope="col">Last Update</th>
-                                    <th scope="col">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($preventives as $preventive)
-                                <tr>
-                                    <td>{{ ++$i }}</td>
-                                    <td>{{ $preventive->nama_mesin }}</td>
-                                    <td>{{ $preventive->section }}</td>
-                                    <td>{{ $preventive->lokasi }}</td>
-                                    <td>{{ $preventive->due_date }}</td>
-                                    <td>
-                                        <div style="background-color: {{ $preventive->status_background_color }};
+                        <div class="table-responsive">
+                            <table class="table datatable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">No</th>
+                                        <th scope="col">Nama Mesin</th>
+                                        <th scope="col">Type</th>
+                                        <th scope="col">No Mesin</th>
+                                        <th scope="col">Mulai Operasi</th>
+                                        <th scope="col">Issue</th>
+                                        <th scope="col">Rencana Perbaikan</th>
+                                        <th scope="col">Created Date</th>
+                                        <th scope="col">Last Update</th>
+                                        <th scope="col">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($preventives as $preventive)
+                                    <tr>
+                                        <td>{{ ++$i }}</td>
+                                        <td>{{ $preventive->nama_mesin }}</td>
+                                        <td>{{ $preventive->no_mesin }}</td>
+                                        <td>{{ $preventive->merk}}</td>
+                                        <td>{{ $preventive->mfg_date }}</td>
+                                        <td>{{ $preventive->issue }}</td>
+                                        <td>{{ $preventive->rencana_perbaikan }}</td>
+                                        <td>
+                                            <div style="background-color: {{ $preventive->status_background_color }};
                                             border-radius: 5px; /* Rounded corners */
                                             padding: 5px 10px; /* Padding inside the div */
                                             color: white; /* Text color, adjust as needed */
@@ -56,21 +60,22 @@
                                             text-align: center; /* Center-align text */
                                             text-transform: uppercase; /* Uppercase text */
                                             ">
-                                            {{ $preventive->status }}
-                                        </div>
-                                    </td>
+                                                {{ $preventive->ubahtext() }}
+                                            </div>
+                                        </td>
 
-                                    <td>{{ $preventive->created_at }}</td>
-                                    <td>{{ $preventive->updated_at }}</td>
-                                    <td>
-                                        <a class="btn btn-warning" href="{{ route('deptmtce.editpreventive', $preventive->id) }}">
-                                            <i class="bi bi-eye-fill"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                        <td>{{ $preventive->created_at }}</td>
+                                        <td>{{ $preventive->updated_at }}</td>
+                                        <td>
+                                            <a class="btn btn-warning" href="{{ route('maintenance.editpreventive', $preventive->id) }}">
+                                                <i class="bi bi-eye-fill"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

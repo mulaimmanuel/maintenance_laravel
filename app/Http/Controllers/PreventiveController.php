@@ -3,39 +3,37 @@
 namespace App\Http\Controllers;
 
 use App\Models\Preventive;
+use App\Models\Mesin;
+use App\Models\DetailPreventive;
 use Illuminate\Http\Request;
 
 class PreventiveController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
     public function maintenanceDashPreventive()
     {
-        $preventives = Preventive::latest()->paginate(5);
+        $preventives = Preventive::with(['mesin:id,nama_mesin,no_mesin,merk,mfg_date', 'detailPreventives:id,issue,rencana_perbaikan'])->latest()->get();
         return view('maintenance.dashpreventive', compact('preventives'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     public function deptmtceDashPreventive()
     {
-        $preventives = Preventive::latest()->paginate(5);
-        return view('deptmtce.dashpreventive', compact('preventives'))->with('i', (request()->input('page', 1) - 1) * 5);
+        $preventives = Preventive::latest()->get();
+        $mesins = Mesin::latest()->get();
+        return view('deptmtce.dashpreventive', compact('preventives, mesins'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     public function store(Request $request)
     {
     }
 
+
     public function EditMTCEPreventive(Preventive $preventive)
     {
         $status = $preventive->status;
         // Determine view based on status
-        if ($preventive->status === 'Open') {
+        if ($preventive->status === '0') {
             $viewName = 'maintenance.editpreventive';
-        } else if ($preventive->status === 'Finish') {
+        } else if ($preventive->status === '2') {
             $viewName = 'maintenance.lihatpreventive';
         } else {
             return view('maintenance.index');
@@ -48,9 +46,9 @@ class PreventiveController extends Controller
     {
         $status = $preventive->status;
         // Determine view based on status
-        if ($preventive->status === 'Finish') {
+        if ($preventive->status === '2') {
             $viewName = 'deptmtce.editpreventive';
-        } else if ($preventive->status === 'Open') {
+        } else if ($preventive->status === '0') {
             $viewName = 'deptmtce.lihatpreventive';
         } else {
             return view('deptmtce.index');
@@ -68,11 +66,11 @@ class PreventiveController extends Controller
         // Check if 'confirmed_finish' is submitted
         if ($confirmedFinish === "1") {
             // Update the status to 'Closed'
-            $preventive->update(['status' => 'Finish']);
+            $preventive->update(['status' => '2']);
             return redirect()->route('maintenance.dashpreventive')->with('success', 'Form FPP updated successfully');
         } else if ($confirmedFinish2 === "1") {
             // Update the status to 'Closed'
-            $preventive->update(['status' => 'Finish']);
+            $preventive->update(['status' => '2']);
             return redirect()->route('deptmtce.dashpreventive')->with('success', 'Form FPP updated successfully');
         }
     }

@@ -85,25 +85,31 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    @if($mesin->foto)
-                                    <img id="fotoPreview" src="{{ asset('storage/'.$mesin->foto) }}" alt="Existing Foto" width="300" height="200">
-                                    @else
-                                    <p>Tidak ada foto tersimpan.</p>
-                                    @endif
+                                    <label for="foto" class="form-label">Foto</label>
+                                    <div>
+                                        @if($mesin->foto)
+                                        <img id="fotoPreview" src="{{ asset($mesin->foto) }}" alt="Preview Foto" style="max-width: 200px;">
+                                        @else
+                                        <p>No image available</p>
+                                        @endif
+                                    </div>
                                 </div>
-
 
                                 <div class="mb-3">
                                     <label for="foto" class="form-label">Upload Foto</label>
                                     <input type="file" class="form-control" id="foto" name="foto">
                                 </div>
 
+
                                 <div class="mb-3">
-                                    @if($mesin->sparepart)
-                                    <img id="sparepartPreview" src="{{ asset('storage/'.$mesin->sparepart) }}" alt="Existing Foto" width="300" height="200">
-                                    @else
-                                    <p>Tidak ada foto tersimpan.</p>
-                                    @endif
+                                    <label for="sparepart" class="form-label">Sparepart</label>
+                                    <div>
+                                        @if($mesin->sparepart)
+                                        <img id="fotoPreview" src="{{ asset($mesin->sparepart) }}" alt="Preview Sparepart" style="max-width: 200px;">
+                                        @else
+                                        <p>No image available</p>
+                                        @endif
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
@@ -195,15 +201,13 @@
         }
     </script>
 
-
-    <!-- Di bagian bawah formulir atau dalam tag <script> -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Menangkap elemen input file
             var fotoInput = document.getElementById('foto');
             var sparepartInput = document.getElementById('sparepart');
 
-            // Menangkap elemen gambar
+            // Menangkap elemen gambar preview
             var fotoPreview = document.getElementById('fotoPreview');
             var sparepartPreview = document.getElementById('sparepartPreview');
 
@@ -229,6 +233,7 @@
             }
         });
     </script>
+
 
 
 </main><!-- End #main -->

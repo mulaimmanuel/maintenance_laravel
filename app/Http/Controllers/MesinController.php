@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FormFPP;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Mesin;
 use Illuminate\Http\Request;
@@ -10,7 +11,8 @@ class MesinController extends Controller
 {
     public function index()
     {
-        $mesins = Mesin::latest()->paginate(5);
+        $mesins = Mesin::latest()->get();
+
         return view('mesins.index', compact('mesins'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
@@ -23,13 +25,29 @@ class MesinController extends Controller
     {
         // Validasi input
         $request->validate([
-            'foto' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Hanya menerima format gambar dengan ukuran maksimal 2MB
-            'sparepart' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Sesuaikan dengan kebutuhan Anda
+            'foto' => 'image|mimes:jpeg,png,jpg,gif|max:4096', // Hanya menerima format gambar dengan ukuran maksimal 4MB
+            'sparepart' => 'image|mimes:jpeg,png,jpg,gif|max:4096', // Sesuaikan dengan kebutuhan Anda
         ]);
 
-        // Simpan foto dan sparepart ke penyimpanan dan dapatkan pathnya
-        $fotoPath = $request->file('foto') ? $request->file('foto')->store('foto', 'public') : null;
-        $sparepartPath = $request->file('sparepart') ? $request->file('sparepart')->store('sparepart', 'public') : null;
+        // Pindahkan foto ke direktori public/assets/foto
+        if ($request->hasFile('foto')) {
+            $foto = $request->file('foto');
+            $fotoName = $foto->getClientOriginalName();
+            $foto->move(public_path('assets/foto'), $fotoName);
+            $fotoPath = 'assets/foto/' . $fotoName;
+        } else {
+            $fotoPath = null;
+        }
+
+        // Pindahkan sparepart ke direktori public/assets/sparepart
+        if ($request->hasFile('sparepart')) {
+            $sparepart = $request->file('sparepart');
+            $sparepartName = $sparepart->getClientOriginalName();
+            $sparepart->move(public_path('assets/sparepart'), $sparepartName);
+            $sparepartPath = 'assets/sparepart/' . $sparepartName;
+        } else {
+            $sparepartPath = null;
+        }
 
         // Simpan data mesin beserta path foto dan sparepart ke database
         Mesin::create([
@@ -48,10 +66,15 @@ class MesinController extends Controller
         return redirect()->route('mesins.index')->with('success', 'Mesin created successfully');
     }
 
-
-    public function show(Mesin $mesin)
+    public function show(Mesin $mesin, FormFPP $formperbaikan)
     {
-        return view('mesins.show', compact('mesin'));
+        // Mengambil formperbaikans berdasarkan status 3 dan nomor_mesin dari mesin yang sama dengan mesin di formperbaikan
+        $formperbaikans = FormFPP::where('status', '3')
+            ->where('mesin', $mesin->no_mesin)
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
+        return view('mesins.show', compact('mesin', 'formperbaikan', 'formperbaikans'));
     }
 
     public function edit(Mesin $mesin)
@@ -73,26 +96,23 @@ class MesinController extends Controller
             'preventive_date' => $request->preventive_date
         ]);
 
-        // Jika ada foto baru, simpan ke penyimpanan dan update pathnya
         if ($request->hasFile('foto')) {
-            // Hapus foto lama jika tidak null
+            // Menghapus foto lama jika ada
             if ($mesin->foto) {
-                Storage::disk('public')->delete($mesin->foto);
+                $oldFotoPath = public_path('assets/' . $mesin->foto);
+                if (file_exists($oldFotoPath)) {
+                    unlink($oldFotoPath);
+                }
             }
 
-            $fotoPath = $request->file('foto')->store('foto', 'public');
-            $mesin->update(['foto' => $fotoPath]);
-        }
+            // Simpan foto baru
+            $foto = $request->file('foto');
+            $fotoName = $foto->getClientOriginalName();
+            $fotoPath = $foto->move(public_path('assets/foto'), $fotoName);
 
-        // Jika ada sparepart baru, simpan ke penyimpanan dan update pathnya
-        if ($request->hasFile('sparepart')) {
-            // Hapus sparepart lama jika tidak null
-            if ($mesin->sparepart) {
-                Storage::disk('public')->delete($mesin->sparepart);
-            }
-
-            $sparepartPath = $request->file('sparepart')->store('sparepart', 'public');
-            $mesin->update(['sparepart' => $sparepartPath]);
+            // Perbarui path foto di database
+            $mesin->foto = 'foto/' . $fotoName;
+            $mesin->save();
         }
 
         return redirect()->route('mesins.index')->with('success', 'Mesin updated successfully');

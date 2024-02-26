@@ -11,113 +11,121 @@
 
     <!-- New Form Content -->
     <section class="section">
-        <div class="container">
-            <div class="row">
-                <div class="col-mt-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Form Lihat FPP</h5>
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Form Lihat FPP</h5>
 
-                            <form id="FPPForm" action="{{ route('formperbaikans.update', $formperbaikan->id) }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                @method('PUT')
-                                <div class="mb-3">
-                                    <label for="pemohon" class="form-label">
-                                        Pemohon<span style="color: red;">*</span>
-                                    </label>
-                                    <input type="text" class="form-control" id="pemohon" name="pemohon" value="{{ $formperbaikan->pemohon }}" readonly>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="date" class="form-label">
-                                        Date<span style="color: red;">*</span>
-                                    </label>
-                                    <input type="date" class="form-control" id="date" name="date" value="{{ $formperbaikan->date }}" readonly>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="section" class="form-label">
-                                        Section<span style="color: red;">*</span>
-                                    </label>
-                                    <select class="form-select" id="section" name="section" disabled>
-                                        <option value="{{ $formperbaikan->section }}" selected>{{ $formperbaikan->section }}</option>
-                                    </select>
-                                    <input type="hidden" name="section" value="{{ $formperbaikan->section }}">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="mesin" class="form-label">
-                                        Mesin<span style="color: red;">*</span>
-                                    </label>
-                                    <select class="form-select" id="mesin" name="mesin" disabled>
-                                        <option value="{{ $formperbaikan->mesin }}" selected>{{ $formperbaikan->mesin }}</option>
-                                    </select>
-                                    <input type="hidden" name="mesin" value="{{ $formperbaikan->mesin }}">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="lokasi" class="form-label">
-                                        Lokasi Mesin<span style="color: red;">*</span>
-                                    </label>
-                                    <select class="form-select" id="lokasi" name="lokasi" disabled>
-                                        <option value="{{ $formperbaikan->lokasi }}" selected>{{ $formperbaikan->lokasi }}</option>
-                                    </select>
-                                    <input type="hidden" name="lokasi" value="{{ $formperbaikan->lokasi }}">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="kendala" class="form-label">
-                                        Kendala<span style="color: red;">*</span>
-                                    </label>
-                                    <textarea class="form-control" id="kendala" name="kendala" readonly>{{ $formperbaikan->kendala }}</textarea>
-                                </div>
-                                <div class="mb-3">
+                        <form id="FPPForm" action="{{ route('formperbaikans.update', $formperbaikan->id) }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
+                            <div class="mb-3">
+                                <label for="pemohon" class="form-label">
+                                    Pemohon<span style="color: red;">*</span>
+                                </label>
+                                <input type="text" class="form-control" id="pemohon" name="pemohon" value="{{ $formperbaikan->pemohon }}" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="date" class="form-label">
+                                    Date<span style="color: red;">*</span>
+                                </label>
+                                <input type="date" class="form-control" id="date" name="date" value="{{ $formperbaikan->date }}" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="section" class="form-label">
+                                    Section<span style="color: red;">*</span>
+                                </label>
+                                <select class="form-select" id="section" name="section" disabled>
+                                    <option value="{{ $formperbaikan->section }}" selected>{{ $formperbaikan->section }}</option>
+                                </select>
+                                <input type="hidden" name="section" value="{{ $formperbaikan->section }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="mesin" class="form-label">
+                                    Mesin<span style="color: red;">*</span>
+                                </label>
+                                <select class="form-select" id="mesin" name="mesin" disabled>
+                                    <option value="{{ $formperbaikan->mesin }}" selected>{{ $formperbaikan->mesin }}</option>
+                                </select>
+                                <input type="hidden" name="mesin" value="{{ $formperbaikan->mesin }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="lokasi" class="form-label">
+                                    Lokasi Mesin<span style="color: red;">*</span>
+                                </label>
+                                <select class="form-select" id="lokasi" name="lokasi" disabled>
+                                    <option value="{{ $formperbaikan->lokasi }}" selected>{{ $formperbaikan->lokasi }}</option>
+                                </select>
+                                <input type="hidden" name="lokasi" value="{{ $formperbaikan->lokasi }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="kendala" class="form-label">
+                                    Kendala<span style="color: red;">*</span>
+                                </label>
+                                <textarea class="form-control" id="kendala" name="kendala" readonly>{{ $formperbaikan->kendala }}</textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="gambar" class="form-label">Gambar</label>
+                                <div id="gambarPreviewContainer">
                                     @if($formperbaikan->gambar)
-                                    <img id="gambarPreview" src="{{ asset('storage/'.$formperbaikan->gambar) }}" alt="" width="300" height="200">
+                                    <img id="gambarPreview" src="{{ asset($formperbaikan->gambar) }}" alt="Preview Gambar" style="max-width: 200px;">
                                     @else
-                                    <p>Tidak ada foto tersimpan.</p>
+                                    <p>No image available</p>
                                     @endif
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
+
                     </div>
                 </div>
+            </div>
 
-                <div class="col-mt-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Tabel History Progress</h5>
-                            <!-- Tabel History Progress -->
-                            <div class="table-responsive">
-                                <table class="table datatable w-100 table-striped table-bordered">
-                                    <thead class="bg-primary text-white">
-                                        <tr>
-                                            <th scope="col">No</th>
-                                            <th scope="col">Nomor Tiket</th>
-                                            <th scope="col">Tindak Lanjut</th>
-                                            <th scope="col">Schedule Pengecekan</th>
-                                            <th scope="col">Operator</th>
-                                            <th scope="col">Due Date</th>
-                                            <th scope="col">File</th>
-                                            <th scope="col">Note</th>
-                                            <th scope="col">Last Update</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($formperbaikans as $formperbaikan)
-                                        <tr>
-                                            <td>{{ ++$i }}</td>
-                                            <td>{{ $formperbaikan->id }}</td>
-                                            <td>{{ $formperbaikan->tindak_lanjut }}</td>
-                                            <td>{{ $formperbaikan->schedule_pengecekan }}</td>
-                                            <td>PIC</td>
-                                            <td>{{ $formperbaikan->due_date }}</td>
-                                            <td>
-                                                @if ($formperbaikan->attachment_file)
-                                                <a href="{{ route('download.excel', $formperbaikan) }}" target="_blank" class="btn btn-success">
-                                                    <i class="bi bi-table"></i> Download Excel File
-                                                </a>
-                                                @else
-                                                <span class="text-muted">N/A</span>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <div style="background-color: {{ $formperbaikan->note_background_color }};
+            <div class="col-lg-9">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Tabel History Progress</h5>
+                        <!-- Tabel History Progress -->
+                        <div class="table-responsive">
+                            <table class="table datatable w-100 table-striped table-bordered">
+                                <thead class="bg-primary text-white">
+                                    <tr>
+                                        <th scope="col">No</th>
+                                        <th scope="col">Tindak Lanjut</th>
+                                        <th scope="col">Schedule Pengecekan</th>
+                                        <th scope="col">Operator</th>
+                                        <th scope="col">Due Date</th>
+                                        <th scope="col">File</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Note</th>
+                                        <th scope="col">Last Update</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($formperbaikan->tindaklanjuts as $tindaklanjut)
+                                    <tr>
+                                        <td>{{ ++$i }}</td>
+                                        <td>{{ $tindaklanjut->tindak_lanjut }}</td>
+                                        <td>{{ $tindaklanjut->schedule_pengecekan }}</td>
+                                        <td>PIC</td>
+                                        <td>{{ $tindaklanjut->due_date }}</td>
+                                        <td>
+                                            @if ($tindaklanjut->attachment_file)
+                                            @php
+                                            $fileName = basename($tindaklanjut->attachment_file);
+                                            $buttonClass = $tindaklanjut->getAttachmentButtonClass();
+                                            $buttonIcon = $tindaklanjut->getAttachmentButtonIcon();
+                                            @endphp
+                                            <a href="{{ route('download.attachment', $tindaklanjut) }}" target="_blank" class="{{ $buttonClass }}">
+                                                <i class="{{ $buttonIcon }}"></i> {{ $fileName }}
+                                            </a>
+                                            @else
+                                            <span class="text-muted">N/A</span>
+                                            @endif
+                                        </td>
+
+                                        <td>
+                                            <div style="background-color: {{ $tindaklanjut->status_background_color }};
                                             border-radius: 5px; /* Rounded corners */
                                             padding: 5px 10px; /* Padding inside the div */
                                             color: white; /* Text color, adjust as needed */
@@ -125,16 +133,26 @@
                                             text-align: center; /* Center-align text */
                                             text-transform: uppercase; /* Uppercase text */
                                             ">
-                                                    {{ $formperbaikan->note }}
-                                                </div>
-                                            </td>
-                                            <td>{{ $formperbaikan->updated_at }}</td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-
-                            </div>
+                                                {{ $tindaklanjut->ubahtext() }}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div style="background-color: {{ $tindaklanjut->note_background_color }};
+                        border-radius: 5px; /* Rounded corners */
+                        padding: 5px 10px; /* Padding inside the div */
+                        color: black; /* Text color, adjust as needed */
+                        font-weight: bold; /* Bold text */
+                        text-align: center; /* Center-align text */
+                        text-transform: uppercase; /* Uppercase text */
+                        ">
+                                                {{ $tindaklanjut->note }}
+                                            </div>
+                                        </td>
+                                        <td>{{ $tindaklanjut->updated_at }}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -144,30 +162,20 @@
 </main>
 @endsection
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Menangkap elemen input file
-        var gambarInput = document.getElementById('gambar');
-
-        // Menangkap elemen gambar
-        var gambarPreview = document.getElementById('gambarPreview');
-
-        // Mengatur listener untuk input file
-        fotoInput.addEventListener('change', function() {
-            previewImage(this, gambarPreview);
-        });
-
-        // Fungsi untuk menampilkan preview gambar
-        function previewImage(input, previewElement) {
-            var file = input.files[0];
-            var reader = new FileReader();
-
-            reader.onload = function(e) {
-                previewElement.src = e.target.result;
-            };
-
-            reader.readAsDataURL(file);
-        }
-    });
+    function previewImage(event) {
+        var input = event.target;
+        var reader = new FileReader();
+        reader.onload = function() {
+            var img = document.createElement("img");
+            img.src = reader.result;
+            img.alt = "Preview Gambar";
+            img.style.maxWidth = "200px";
+            var container = document.getElementById("gambarPreviewContainer");
+            container.innerHTML = ""; // Clear existing content
+            container.appendChild(img);
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
 </script>
 <script>
     $(document).ready(function() {

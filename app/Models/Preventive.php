@@ -11,7 +11,8 @@ class Preventive extends Model
     use HasFactory;
     protected $fillable = [
         'id', 'nama_mesin',
-        'section', 'lokasi', 'due_date', 'status'
+        'type', 'no_mesin', 'mulai_ops', 'issue',
+        'rencana_perbaikan', 'status'
     ];
 
     protected $dates = ['created_at', 'updated_at'];
@@ -31,20 +32,44 @@ class Preventive extends Model
         $status = strtolower($this->attributes['status']);
 
         switch ($status) {
-            case 'open':
-            case 'Open':
-                return 'green';
-            case 'on progress':
-            case 'On Progress':
-                return 'orange'; // Mengganti warna menjadi 'darkyellow'
-            case 'finish':
-            case 'Finish':
-                return 'darkblue';
-            case 'closed':
-            case 'Closed':
-                return 'black';
+            case '0':
+                return 'green'; // Mengubah warna menjadi 'green' untuk status 0 (Open)
+            case '1':
+                return 'orange'; // Mengubah warna menjadi 'orange' untuk status 1 (On Progress)
+            case '2':
+                return 'blue'; // Mengubah warna menjadi 'blue' untuk status 2 (Finish)
+            case '3':
+                return 'black'; // Mengubah warna menjadi 'black' untuk status 3 (Closed)
             default:
-                return 'lightgray';
+                return 'transparent'; // Mengembalikan 'transparent' untuk nilai lain
+        }
+    }
+
+    public function mesin()
+    {
+        return $this->belongsTo(Mesin::class);
+    }
+
+    public function detailPreventives()
+    {
+        return $this->hasMany(DetailPreventive::class, 'id');
+    }
+
+    public function ubahText()
+    {
+        $status = $this->attributes['status'];
+
+        switch ($status) {
+            case '0':
+                return 'Open';
+            case '1':
+                return 'On Progress';
+            case '2':
+                return 'Finish';
+            case '3':
+                return 'Closed';
+            default:
+                return 'Unknown';
         }
     }
 }

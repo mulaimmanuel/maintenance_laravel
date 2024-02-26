@@ -4,9 +4,6 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
 
 <main id="main" class="main">
-    <!-- Existing content... -->
-
-    <!-- New Form Content -->
     <section class="section">
         <div class="container">
             <div class="row">
@@ -46,7 +43,7 @@
                                     <input type="hidden" name="lokasi" value="{{ $preventive->lokasi }}">
                                 </div>
 
-                                <input type="hidden" name="confirmed_finish" id="confirmed_finish2" value='0'>
+                                <input type="hidden" name="confirmed_finish2" id="confirmed_finish2" value='0'>
 
                                 <div class="text-end">
                                     <button type="button" class="btn btn-primary" id="confirmedButton" onclick="handleFinishButtonClick()">Confirmed</button>

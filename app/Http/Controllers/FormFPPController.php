@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\FormFPP;
+use App\Models\TindakLanjut;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -10,32 +11,48 @@ use Illuminate\Support\Facades\Storage;
 class FormFPPController extends Controller
 {
 
-    public function index()
-    {
-    }
-
     public function DashboardProduction()
     {
-        $formperbaikans = FormFPP::latest()->paginate(5);
-        return view('fpps.index', compact('formperbaikans'))->with('i', (request()->input('page', 1) - 1) * 5);
+        // Mengambil semua data FormFPP
+        $formperbaikans = FormFPP::latest()->get();
+
+        // Mengambil semua data TindakLanjut
+        $tindaklanjuts = TindakLanjut::latest()->get();
+
+        return view('fpps.index', compact('formperbaikans', 'tindaklanjuts'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     public function DashboardMaintenance()
     {
-        $formperbaikans = FormFPP::latest()->paginate(5);
-        return view('maintenance.index', compact('formperbaikans'))->with('i', (request()->input('page', 1) - 1) * 5);
+        // Mengambil semua data FormFPP
+        $formperbaikans = FormFPP::latest()->get();
+
+        // Mengambil semua data TindakLanjut
+        $tindaklanjuts = TindakLanjut::latest()->get();
+
+        return view('maintenance.index', compact('formperbaikans', 'tindaklanjuts'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     public function DashboardDeptMTCE()
     {
-        $formperbaikans = FormFPP::latest()->paginate(5);
-        return view('deptmtce.index', compact('formperbaikans'))->with('i', (request()->input('page', 1) - 1) * 5);
+        // Mengambil semua data FormFPP
+        $formperbaikans = FormFPP::latest()->get();
+
+        // Mengambil semua data TindakLanjut
+        $tindaklanjuts = TindakLanjut::latest()->get();
+
+        return view('deptmtce.index', compact('formperbaikans', 'tindaklanjuts'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     public function DashboardFPPSales()
     {
-        $formperbaikans = FormFPP::latest()->paginate(5);
-        return view('sales.index', compact('formperbaikans'))->with('i', (request()->input('page', 1) - 1) * 5);
+        // Mengambil semua data FormFPP
+        $formperbaikans = FormFPP::latest()->get();
+
+        // Mengambil semua data TindakLanjut
+        $tindaklanjuts = TindakLanjut::latest()->get();
+
+        return view('sales.index', compact('formperbaikans', 'tindaklanjuts'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     public function create()
@@ -43,64 +60,87 @@ class FormFPPController extends Controller
         return view('fpps.create');
     }
 
-    public function LihatMaintenance(FormFPP $formperbaikan)
+    public function LihatMaintenance(FormFPP $formperbaikan, TindakLanjut $tindaklanjut)
     {
-        $formperbaikans = FormFPP::latest()->paginate(5);
-        // // Assuming $formperbaikan is an instance of the FormFPP model
+        $formperbaikans = FormFPP::latest()->get();
+        $tindaklanjuts = TindakLanjut::latest()->get();
+
         $status = $formperbaikan->status;
 
-        return view('maintenance.lihat', compact('formperbaikan', 'formperbaikans'))->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('maintenance.lihat', compact('formperbaikan', 'formperbaikans', 'tindaklanjuts', 'tindaklanjut'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
+
 
     public function LihatFPPSales(FormFPP $formperbaikan)
     {
-        $formperbaikans = FormFPP::latest()->paginate(5);
+        // Mengambil semua data FormFPP
+        $formperbaikans = FormFPP::latest()->get();
+
+        // Mengambil semua data TindakLanjut
+        $tindaklanjuts = TindakLanjut::latest()->get();
+
         // // Assuming $formperbaikan is an instance of the FormFPP model
         $status = $formperbaikan->status;
 
-        return view('sales.lihat', compact('formperbaikan', 'formperbaikans'))->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('sales.lihat', compact('formperbaikan', 'formperbaikans', 'tindaklanjuts'))->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
-    public function EditMaintenance(FormFPP $formperbaikan)
+    public function EditMaintenance(FormFPP $formperbaikan, TindakLanjut $tindaklanjut)
     {
-        $formperbaikans = FormFPP::latest()->paginate(5);
         // Determine view based on status
-        if ($formperbaikan->status === 'Open') {
-            return view('maintenance.edit', compact('formperbaikan', 'formperbaikans'))->with('i', (request()->input('page', 1) - 1) * 5);
-        } elseif ($formperbaikan->status === 'Finish' || $formperbaikan->status === 'Closed') {
-            return view('maintenance.lihat', compact('formperbaikan', 'formperbaikans'))->with('i', (request()->input('page', 1) - 1) * 5);
-        } else {
-            return view('maintenance.create', compact('formperbaikan', 'formperbaikans'))->with('i', (request()->input('page', 1) - 1) * 5);
+        // Mengambil semua data FormFPP
+        $formperbaikans = FormFPP::latest()->get();
+
+        // Mengambil semua data TindakLanjut
+        $tindaklanjuts = TindakLanjut::latest()->get();
+
+        $status = $formperbaikan->status;
+
+        if ($status === '0') {
+            return view('maintenance.edit', compact('formperbaikan', 'formperbaikans', 'tindaklanjuts', 'tindaklanjut'))->with('i', (request()->input('page', 1) - 1) * 5);
+        } elseif ($status === '2' || $status === '3') {
+            return view('maintenance.lihat', compact('formperbaikan', 'formperbaikans', 'tindaklanjuts', 'tindaklanjut'))->with('i', (request()->input('page', 1) - 1) * 5);
+        } else if ($status === '1') {
+            return view('maintenance.create', compact('formperbaikan', 'formperbaikans', 'tindaklanjuts', 'tindaklanjut'))->with('i', (request()->input('page', 1) - 1) * 5);
         }
     }
 
-
     public function LihatFPP(FormFPP $formperbaikan)
     {
-        $formperbaikans = FormFPP::latest()->paginate(5);
+        // Mengambil semua data FormFPP
+        $formperbaikans = FormFPP::latest()->get();
+
+        // Mengambil semua data TindakLanjut
+        $tindaklanjuts = TindakLanjut::latest()->get();
+
         $status = $formperbaikan->status;
 
         // Determine view based on status
-        if ($formperbaikan->status === 'Open' || $formperbaikan->status === 'Closed' || $formperbaikan->status === 'On Progress') {
-            return view('fpps.show', compact('formperbaikan', 'formperbaikans'))->with('i', (request()->input('page', 1) - 1) * 5);
-        } elseif ($formperbaikan->status === 'Finish') {
-            return view('fpps.closed', compact('formperbaikan', 'formperbaikans'))->with('i', (request()->input('page', 1) - 1) * 5);
+        if ($formperbaikan->status === '0' || $formperbaikan->status === '3' || $formperbaikan->status === '1') {
+            return view('fpps.show', compact('formperbaikan', 'formperbaikans', 'tindaklanjuts'))->with('i', (request()->input('page', 1) - 1) * 5);
+        } elseif ($formperbaikan->status === '2') {
+            return view('fpps.closed', compact('formperbaikan', 'formperbaikans', 'tindaklanjuts'))->with('i', (request()->input('page', 1) - 1) * 5);
         } else {
-            return view('fpps.index', compact('formperbaikan', 'formperbaikans'))->with('i', (request()->input('page', 1) - 1) * 5);
+            return view('fpps.index', compact('formperbaikan', 'formperbaikans', 'tindaklanjuts'))->with('i', (request()->input('page', 1) - 1) * 5);
         }
     }
 
     public function LihatDeptMTCE(FormFPP $formperbaikan)
     {
-        $formperbaikans = FormFPP::latest()->paginate(5);
+        // Mengambil semua data FormFPP
+        $formperbaikans = FormFPP::latest()->get();
+
+        // Mengambil semua data TindakLanjut
+        $tindaklanjuts = TindakLanjut::latest()->get();
+
         // // Assuming $formperbaikan is an instance of the FormFPP model
         $status = $formperbaikan->status;
 
         // Determine view based on status
-        if ($formperbaikan->status === 'Open' || $formperbaikan->status === 'Closed' || $formperbaikan->status === 'On Progress') {
-            return view('deptmtce.lihatfpp', compact('formperbaikans', 'formperbaikan'))->with('i', (request()->input('page', 1) - 1) * 5);
-        } elseif ($formperbaikan->status === 'Finish') {
-            return view('deptmtce.show', compact('formperbaikan', 'formperbaikans'))->with('i', (request()->input('page', 1) - 1) * 5);
+        if ($formperbaikan->status === '0' || $formperbaikan->status === '3' || $formperbaikan->status === '1') {
+            return view('deptmtce.lihatfpp', compact('formperbaikan', 'formperbaikans', 'tindaklanjuts'))->with('i', (request()->input('page', 1) - 1) * 5);
+        } elseif ($formperbaikan->status === '2') {
+            return view('deptmtce.show', compact('formperbaikan', 'formperbaikans', 'tindaklanjuts'))->with('i', (request()->input('page', 1) - 1) * 5);
         } else {
             $viewName = 'deptmtce.index';
         }
@@ -110,15 +150,36 @@ class FormFPPController extends Controller
 
     public function store(Request $request)
     {
-        // Simpan gambar ke penyimpanan dan dapatkan pathnya
-        $gambarPath = $request->hasFile('gambar') ? $request->file('gambar')->store('gambar', 'public') : null;
+        // Validasi input
+        $request->validate([
+            'gambar' => 'image|mimes:jpeg,png,jpg,gif|max:4096', // Hanya menerima format gambar dengan ukuran maksimal 4MB
+        ]);
+
+        // Dapatkan ID terakhir dari tabel FormFPP
+        $lastFPPId = FormFPP::latest('id')->first()->id ?? 0;
+
+        // Buat nomor FPP dengan format FPXXXX, misalnya FP0001
+        $id_fpp = 'FP' . str_pad($lastFPPId + 1, 4, '0', STR_PAD_LEFT);
+
+        // Tambahkan id_fpp ke dalam request
+        $request->merge(['id_fpp' => $id_fpp]);
+
+        if ($request->hasFile('gambar')) {
+            $gambar = $request->file('gambar');
+            $gambarName = $gambar->getClientOriginalName();
+            $gambar->move(public_path('assets/gambar'), $gambarName);
+            $gambarPath = 'assets/gambar/' . $gambarName;
+        } else {
+            $gambarPath = null;
+        }
 
         // Add 'status' field with a default value of 'open'
-        $request->merge(['status' => 'Open']);
+        $request->merge(['status' => 0]);
         $request->merge(['note' => 'Form FPP Dibuat']);
 
         // Simpan data mesin beserta path gambar dan file attachment ke database
-        FormFPP::create([
+        $createdFormFPP = FormFPP::create([
+            'id_fpp' => $request->id_fpp,
             'pemohon' => $request->pemohon,
             'date' => $request->date,
             'section' => $request->section,
@@ -127,11 +188,12 @@ class FormFPPController extends Controller
             'kendala' => $request->kendala,
             'gambar' => $gambarPath,
             'status' => $request->status,
-            'tindak_lanjut' => $request->tindak_lanjut,
-            'due_date' => $request->due_date,
-            'schedule_pengecekan' => $request->schedule_pengecekan,
-            'attachment_file' => $request->attachment_file,
-            'note' => $request->note
+        ]);
+
+        TindakLanjut::create([
+            'id_fpp' => $createdFormFPP->id_fpp,
+            'status' => $request->status,
+            'note' => $request->note,
         ]);
 
         return redirect()->route('fpps.index')->with('success', 'Form FPP created successfully.');
@@ -140,9 +202,9 @@ class FormFPPController extends Controller
     public function show(FormFPP $formperbaikan)
     {
         $status = $formperbaikan->status;
-        if ($formperbaikan->status === 'Open' || $formperbaikan->status === 'Closed') {
+        if ($formperbaikan->status === '0' || $formperbaikan->status === '3') {
             $viewName = 'deptmtce.lihatfpp';
-        } elseif ($formperbaikan->status === 'Finish') {
+        } elseif ($formperbaikan->status === '2') {
             $viewName = 'deptmtce.show';
         } else {
             $viewName = 'deptmtce.index';
@@ -153,9 +215,9 @@ class FormFPPController extends Controller
     public function edit(FormFPP $formperbaikan)
     {
         // Determine view based on status
-        if ($formperbaikan->status === 'Open') {
+        if ($formperbaikan->status === '0') {
             $viewName = 'maintenance.edit';
-        } elseif ($formperbaikan->status === 'Finish' || $formperbaikan->status === 'Closed') {
+        } elseif ($formperbaikan->status === '2' || $formperbaikan->status === '3') {
             $viewName = 'maintenance.lihat';
         } else {
             $viewName = 'maintenance.create';
@@ -164,82 +226,110 @@ class FormFPPController extends Controller
         return view($viewName, compact('formperbaikan'));
     }
 
-
-    public function update(Request $request, FormFPP $formperbaikan)
+    public function update(Request $request, FormFPP $formperbaikan, TindakLanjut $tindaklanjut)
     {
-        // Validasi input
-        $request->validate([
-            'gambar' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'attachment_file' => 'file|mimes:xlsx,xls|max:2048',
-        ]);
-
-        // Handle file upload/update
+        // Handle file upload/update for attachment_file
         if ($request->hasFile('attachment_file')) {
-            // Delete the existing file if it exists
-            if ($formperbaikan->attachment_file) {
-                Storage::delete($formperbaikan->attachment_file);
-            }
-
-            // Store the new file
-            $attachmentFile = $request->file('attachment_file')->store('public');
+            $attachmentFile = $request->file('attachment_file');
+            $attachmentFileName = $attachmentFile->getClientOriginalName();
+            $attachmentFile->move(public_path('assets/attachment'), $attachmentFileName);
+            $attachmentFilePath = 'assets/attachment/' . $attachmentFileName;
         } else {
-            // If no new file is uploaded, use the existing file path
-            $attachmentFile = $formperbaikan->attachment_file;
+            $attachmentFilePath = null;
         }
 
-        // Update other form data
-        $formperbaikan->update(array_merge($request->all(), ['note' => $request->input('note'), 'attachment_file' => $attachmentFile]));
+        // Replicate model TindakLanjut yang ada
+        $newTindakLanjut = $tindaklanjut->replicate();
 
+        // Assign fields that need to be updated
+        $newTindakLanjut->id_fpp = $formperbaikan->id_fpp;
+        $newTindakLanjut->tindak_lanjut = $request->input('tindak_lanjut', $tindaklanjut->tindak_lanjut);
+        $newTindakLanjut->due_date = $request->input('due_date', $tindaklanjut->due_date);
+        $newTindakLanjut->schedule_pengecekan = $request->input('schedule_pengecekan', $tindaklanjut->schedule_pengecekan);
+        $newTindakLanjut->status = $request->input('status', $tindaklanjut->status);
+        $newTindakLanjut->note = $request->input('note', $tindaklanjut->note);
+        $newTindakLanjut->attachment_file = $attachmentFilePath;
+
+        // Save the updated model
+        $newTindakLanjut->save();
+
+        // Update other form data
+        $formperbaikan->update($request->all());
 
         // Update the form data
-        $confirmedFinish = $request->input('confirmed_finish'); //Maintenance Finish tindak Lanjut
-        $confirmedFinish2 = $request->input('confirmed_finish2'); //Dept.MTCE Konfirmasi
-        $confirmedFinish3 = $request->input('confirmed_finish3'); //User Production Closed FPP
-        $confirmedFinish4 = $request->input('confirmed_finish4'); //Dept.Mtce Check Again
+        $confirmedFinish = $request->input('confirmed_finish'); // Ubah status jadi finish
+        $confirmedFinish2 = $request->input('confirmed_finish2'); // Dikonfimasi oleh Dept.MTCE
+        $confirmedFinish3 = $request->input('confirmed_finish3'); // Ubah status menjadi Closed
+        $confirmedFinish4 = $request->input('confirmed_finish4'); // Ubah status menjadi On Progress ketika Check Again
+        $confirmedFinish5 = $request->input('confirmed_finish5'); // Save Tidak mengubah status
+        $confirmedFinish6 = $request->input('confirmed_finish6'); // Save Tidak mengubah status
 
-        // Check if 'confirmed_finish' is submitted
+        // Check the confirmed_finish conditions
         if ($confirmedFinish === "1") {
-            // Update the status to 'Closed'
-            $formperbaikan->update(['note' => 'Tindak Lanjut Submitted']);
-            $formperbaikan->update(['status' => 'Finish']);
+            // Update the status and note accordingly in the original TindakLanjut
+            $formperbaikan->update(['status' => 2]);
+            $newTindakLanjut->update([
+                'note' => 'DISUBMIT MAINTENANCE',
+                'status' => '2',
+            ]);
+
             return redirect()->route('maintenance.index')->with('success', 'Form FPP updated successfully');
-        } else if ($confirmedFinish2 === "1") {
-            // Update the status to 'On Progress'
-            $formperbaikan->update(['note' => 'Tindak Lanjut Berhasil Dikonfirmasi']);
+        } elseif ($confirmedFinish2 === "1") {
+            // Update the status and note accordingly in the original TindakLanjut
+            $formperbaikan->update(['status' => '2']);
+            $newTindakLanjut->update([
+                'note' => 'Dikonfirmasi Dept.Maintenance',
+                'status' => '2',
+            ]);
+
             return redirect()->route('deptmtce.index')->with('success', 'Form FPP updated successfully');
-        } else if ($confirmedFinish3 === "1") {
-            // Update the status to 'Closed'
-            $formperbaikan->update(['note' => 'Form FPP Closed']);
-            $formperbaikan->update(['status' => 'Closed']);
+        } elseif ($confirmedFinish3 === "1") {
+            // Update the status and note accordingly in the original TindakLanjut
+            $formperbaikan->update(['status' => '3']);
+            $newTindakLanjut->update(['note' => 'Diclosed Production', 'status' => '3']);
+
+            return redirect()->route('fpps.index')->with('success', 'Form FPP updated successfully');
+        } elseif ($confirmedFinish4 === "1") {
+            // Update the status and note accordingly in the original TindakLanjut
+            $formperbaikan->update(['status' => '1']);
+            $newTindakLanjut->update(['status' => '1']);
             return redirect()->route('deptmtce.index')->with('success', 'Form FPP updated successfully');
-        } else if ($confirmedFinish4 === "1") {
-            $formperbaikan->update(['status' => 'On Progress']);
-            return redirect()->route('deptmtce.index')->with('success', 'Form FPP updated successfully');
+        } elseif ($confirmedFinish5 === "1") {
+            // Update the status and note accordingly in the original TindakLanjut
+            $formperbaikan->update(['status' => '1']);
+            $newTindakLanjut->update(['note' => 'Dikonfirmasi Maintenance']);
+            return redirect()->route('maintenance.index')->with('success', 'Form FPP updated successfully');
+        } elseif ($confirmedFinish6 === "1") {
+            // Update the status and note accordingly in the original TindakLanjut
+            $formperbaikan->update(['status' => '1']);
+            $newTindakLanjut->update(['note' => 'Sedang Ditindaklanjuti', 'status' => '1']);
+            return redirect()->route('maintenance.index')->with('success', 'Form FPP updated successfully');
         } else {
-            // If 'confirmed_finish' is not submitted, update the status to 'On Progress'
-            // Draft Tindak Lanjut
-            $formperbaikan->update(['note' => 'Draft Tindak Lanjut']);
-            $formperbaikan->update(['status' => 'On Progress']);
+            $newTindakLanjut->update(['note' => 'Sedang Ditindaklanjuti', 'status' => '1']);
+            $formperbaikan->update(['status' => '1']);
             return redirect()->route('maintenance.index')->with('success', 'Form FPP updated successfully');
         }
     }
 
-    public function downloadExcelFile(FormFPP $formperbaikan)
+    public function downloadAttachment(TindakLanjut $tindaklanjut)
     {
         // Pastikan file attachment_file ada sebelum mencoba mengunduh
-        if ($formperbaikan->attachment_file) {
-            // Format ID dengan lebar 4 digit (0001, 0002, dst.)
-            $formattedId = sprintf("%04d", $formperbaikan->id);
+        if ($tindaklanjut->attachment_file) {
+            $filePath = public_path($tindaklanjut->attachment_file);
 
-            // Buat nama file dengan format yang diinginkan
-            $fileName = "Form FPP {$formattedId}.xlsx";
+            // Pastikan file ada di dalam direktori publik
+            if (file_exists($filePath)) {
+                // Ambil base filename dari attachment
+                $baseFileName = basename($tindaklanjut->attachment_file);
 
-            $filePath = storage_path("app/{$formperbaikan->attachment_file}");
-
-            return response()->download($filePath, $fileName);
+                return response()->download($filePath, $baseFileName);
+            } else {
+                // File tidak ditemukan, arahkan kembali dengan pesan kesalahan
+                return redirect()->back()->with('error', 'File not found.');
+            }
         } else {
             // Handle case when no file is attached
-            return redirect()->back()->with('error', 'No Excel file attached.');
+            return redirect()->back()->with('error', 'No file attached.');
         }
     }
 }

@@ -24,31 +24,31 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">List Data Received FPP</h5>
-                        <!-- Table with stripped rows -->
-                        <table class="table datatable">
-                            <thead>
-                                <tr>
-                                    <th scope="col">No</th>
-                                    <th scope="col">Mesin</th>
-                                    <th scope="col">Section</th>
-                                    <th scope="col">Lokasi</th>
-                                    <th scope="col">Kendala</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Created Date</th>
-                                    <th scope="col">Last Update</th>
-                                    <th scope="col">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($formperbaikans as $formperbaikan)
-                                <tr>
-                                    <td>{{ ++$i }}</td>
-                                    <td>{{ $formperbaikan->mesin }}</td>
-                                    <td>{{ $formperbaikan->section }}</td>
-                                    <td>{{ $formperbaikan->lokasi }}</td>
-                                    <td>{{ $formperbaikan->kendala }}</td>
-                                    <td>
-                                        <div style="background-color: {{ $formperbaikan->status_background_color }};
+                        <div class="table-responsive">
+                            <table class="table datatable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">No</th>
+                                        <th scope="col">Mesin</th>
+                                        <th scope="col">Section</th>
+                                        <th scope="col">Lokasi</th>
+                                        <th scope="col">Kendala</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Created Date</th>
+                                        <th scope="col">Last Update</th>
+                                        <th scope="col">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($formperbaikans as $formperbaikan)
+                                    <tr>
+                                        <td>{{ ++$i }}</td>
+                                        <td>{{ $formperbaikan->mesin }}</td>
+                                        <td>{{ $formperbaikan->section }}</td>
+                                        <td>{{ $formperbaikan->lokasi }}</td>
+                                        <td>{{ $formperbaikan->kendala }}</td>
+                                        <td>
+                                            <div style="background-color: {{ $formperbaikan->status_background_color }};
                                             border-radius: 5px; /* Rounded corners */
                                             padding: 5px 10px; /* Padding inside the div */
                                             color: white; /* Text color, adjust as needed */
@@ -56,24 +56,25 @@
                                             text-align: center; /* Center-align text */
                                             text-transform: uppercase; /* Uppercase text */
                                             ">
-                                            {{ $formperbaikan->status }}
-                                        </div>
-                                    </td>
+                                                {{ $formperbaikan->ubahtext() }}
+                                            </div>
+                                        </td>
 
-                                    <td>{{ $formperbaikan->created_at }}</td>
-                                    <td>{{ $formperbaikan->updated_at }}</td>
-                                    <td>
-                                        <a class="btn btn-warning" href="{{ route('maintenance.lihat', $formperbaikan->id) }}">
-                                            <i class="bi bi-eye-fill"></i>
-                                        </a>
-                                        <a class="btn btn-primary" href="{{ route('maintenance.edit', $formperbaikan->id) }}">
-                                            <i class="bi bi-pencil-fill"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                        <td>{{ $formperbaikan->created_at }}</td>
+                                        <td>{{ $formperbaikan->updated_at }}</td>
+                                        <td>
+                                            <a class="btn btn-warning" href="{{ route('maintenance.lihat', $formperbaikan->id) }}">
+                                                <i class="bi bi-eye-fill"></i>
+                                            </a>
+                                            <a class="btn btn-primary" href="{{ route('maintenance.edit', $formperbaikan->id) }}">
+                                                <i class="bi bi-pencil-fill"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -101,36 +101,40 @@
                                         <thead class="bg-primary text-white">
                                             <tr>
                                                 <th scope="col">No</th>
-                                                <th scope="col">Nomor Tiket</th>
                                                 <th scope="col">Tindak Lanjut</th>
                                                 <th scope="col">Schedule Pengecekan</th>
                                                 <th scope="col">Operator</th>
                                                 <th scope="col">Due Date</th>
                                                 <th scope="col">File</th>
+                                                <th scope="col">Status</th>
                                                 <th scope="col">Note</th>
                                                 <th scope="col">Last Update</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($formperbaikans as $formperbaikan)
+                                            @foreach ($formperbaikan->tindaklanjuts as $tindaklanjut)
                                             <tr>
                                                 <td>{{ ++$i }}</td>
-                                                <td>{{ $formperbaikan->id }}</td>
-                                                <td>{{ $formperbaikan->tindak_lanjut }}</td>
-                                                <td>{{ $formperbaikan->schedule_pengecekan }}</td>
+                                                <td>{{ $tindaklanjut->tindak_lanjut }}</td>
+                                                <td>{{ $tindaklanjut->schedule_pengecekan }}</td>
                                                 <td>PIC</td>
-                                                <td>{{ $formperbaikan->due_date }}</td>
+                                                <td>{{ $tindaklanjut->due_date }}</td>
                                                 <td>
-                                                    @if ($formperbaikan->attachment_file)
-                                                    <a href="{{ route('download.excel', $formperbaikan) }}" target="_blank" class="btn btn-success">
-                                                        <i class="bi bi-table"></i> Download Excel File
+                                                    @if ($tindaklanjut->attachment_file)
+                                                    @php
+                                                    $fileName = basename($tindaklanjut->attachment_file);
+                                                    $buttonClass = $tindaklanjut->getAttachmentButtonClass();
+                                                    $buttonIcon = $tindaklanjut->getAttachmentButtonIcon();
+                                                    @endphp
+                                                    <a href="{{ route('download.attachment', $tindaklanjut) }}" target="_blank" class="{{ $buttonClass }}">
+                                                        <i class="{{ $buttonIcon }}"></i> {{ $fileName }}
                                                     </a>
                                                     @else
                                                     <span class="text-muted">N/A</span>
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    <div style="background-color: {{ $formperbaikan->note_background_color }};
+                                                    <div style="background-color: {{ $tindaklanjut->status_background_color }};
                                             border-radius: 5px; /* Rounded corners */
                                             padding: 5px 10px; /* Padding inside the div */
                                             color: white; /* Text color, adjust as needed */
@@ -138,10 +142,21 @@
                                             text-align: center; /* Center-align text */
                                             text-transform: uppercase; /* Uppercase text */
                                             ">
-                                                        {{ $formperbaikan->note }}
+                                                        {{ $tindaklanjut->ubahtext() }}
+                                                    </div>
+                                                <td>
+                                                    <div style="background-color: {{ $tindaklanjut->note_background_color }};
+                        border-radius: 5px; /* Rounded corners */
+                        padding: 5px 10px; /* Padding inside the div */
+                        color: black; /* Text color, adjust as needed */
+                        font-weight: bold; /* Bold text */
+                        text-align: center; /* Center-align text */
+                        text-transform: uppercase; /* Uppercase text */
+                        ">
+                                                        {{ $tindaklanjut->note }}
                                                     </div>
                                                 </td>
-                                                <td>{{ $formperbaikan->updated_at }}</td>
+                                                <td>{{ $tindaklanjut->updated_at }}</td>
                                             </tr>
                                             @endforeach
                                         </tbody>

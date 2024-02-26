@@ -6,7 +6,6 @@
 
 <main id="main" class="main">
     <!-- Existing content... -->
-
     <!-- New Form Content -->
     <section class="section">
         <div class="container">
